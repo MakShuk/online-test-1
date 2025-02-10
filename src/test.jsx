@@ -59,7 +59,7 @@ const INITIAL_TEST = {
             "Скорость принятия решения медленная",
             "Скорость принятия решения быстрая"
           ],
-          "correctAnswers": [1, 3, 4],
+          "correctAnswers": [1, 3, 4, 7],
           "type": "multipleChoice"
         },
         {
@@ -75,7 +75,7 @@ const INITIAL_TEST = {
             "Скорость принятия решения медленная",
             "Скорость принятия решения быстрая"
           ],
-          "correctAnswers": [1, 3, 6],
+          "correctAnswers": [1, 3, 4, 6],
           "type": "multipleChoice"
         },
         {
@@ -201,7 +201,7 @@ export default function TestPage() {
           <div className="p-2 sm:p-4">
             <div className="mb-6">
               <div className="flex justify-between items-center mb-2">
-                <span 
+                <span
                   className="text-sm text-gray-600"
                   role="status"
                   aria-label={`Вопрос ${currentQuestionIndex + 1} из ${questions.length}`}
