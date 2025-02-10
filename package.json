@@ -1,6 +1,6 @@
 {
   "name": "psychotype-test",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": true,
   "description": "Интерактивный тест для определения психотипа и улучшения коммуникации в команде",
   "keywords": [
