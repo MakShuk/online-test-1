@@ -1,209 +1,256 @@
 import React, { useState } from "react";
+import Question from "./components/Question";
+import Results from "./components/Results";
 
-const dragons = [
-  {
-    name: "Дракон высокомерия",
-    questions: [
-      "Часто ли вам кажется, что вы знаете больше или лучше других?",
-      "Бывают ли моменты, когда вы считаете, что вам не о чем учиться у окружающих?",
-      "Сложно ли вам признавать свои ошибки?",
-      "Бывает ли, что вы не готовы слушать чужие мнения, считая их менее значимыми?",
-      "Легко ли вам кажется, что вы превосходите других в своих навыках или знаниях?",
-      "Бывают ли случаи, когда вы сознательно избегаете людей, считая их недостаточно компетентными?",
-      "Часто ли вы стараетесь показать свое превосходство на фоне недостатков других?",
-      "Возникает ли у вас ощущение, что другие просто не понимают вашу глубину или уровень мышления?",
-      "Бывают ли ситуации, когда вы не хотите тратить время на объяснения, потому что считаете, что другие все равно не поймут?",
-    ],
-  },
-  {
-    name: "Дракон самоуничижения",
-    questions: [
-      "Часто ли вы чувствуете себя хуже других?",
-      "Ощущаете ли вы, что ваши успехи незначительны или не заслуживают внимания?",
-      "Считаете ли вы, что ваши ошибки и неудачи показывают, что вы неполноценны?",
-      "Извиняетесь ли вы часто, даже если в этом нет необходимости?",
-      "Сложно ли вам принимать похвалу и признание?",
-      "Бывает ли, что вы заранее избегаете вызовов, считая, что вам их не преодолеть?",
-      "Чувствуете ли вы страх перед критикой и стараетесь избегать ситуаций, где вас могут судить?",
-      "Испытываете ли вы ощущение, что ваши идеи или предложения не заслуживают внимания?",
-      "Бывает ли, что вы откладываете дела, боясь неудачи?",
-    ],
-  },
-  {
-    name: "Дракон нетерпеливости",
-    questions: [
-      "Часто ли вы испытываете раздражение, если люди или события развиваются медленно?",
-      "Бывает ли так, что вам трудно дождаться результата, и вы начинаете торопить события?",
-      "Вы легко расстраиваетесь, если кто-то замедляет вашу работу или планы?",
-      "Предпочитаете ли вы делать что-то быстрее, даже если это может повлиять на качество?",
-      "Ощущаете ли вы внутреннее напряжение, если что-то занимает больше времени, чем ожидалось?",
-      "Чувствуете ли вы разочарование, если другие не работают в том же темпе, что и вы?",
-      "Часто ли вам сложно наслаждаться процессом, потому что вы слишком сосредоточены на конечном результате?",
-      "Бывает ли, что вы предпочитаете взяться за дело сами, лишь бы ускорить его выполнение?",
-      "Часто ли вы чувствуете тревогу, когда нет четкого и быстрого прогресса?",
-    ],
-  },
-  {
-    name: "Дракон мученичества",
-    questions: [
-      "Ощущаете ли вы, что часто жертвуете своими интересами ради других?",
-      "Бывает ли, что вам кажется, что окружающие не ценят ваши усилия?",
-      "Считаете ли вы себя человеком, который постоянно помогает другим, забывая о себе?",
-      "Ощущаете ли вы обиду, если ваши жертвы не замечают?",
-      "Часто ли вы чувствуете, что страдаете ради благополучия других?",
-      "Бывают ли случаи, когда вы чувствуете необходимость заслужить любовь и уважение через самопожертвование?",
-      "Чувствуете ли вы, что часто оказываетесь в положении «вечно пострадавшего»?",
-      "Вам трудно сказать «нет», даже если это вредит вам?",
-      "Бывает ли, что вы сознательно подчеркиваете свои жертвы, чтобы окружающие их заметили?",
-    ],
-  },
-  {
-    name: "Дракон жадности",
-    questions: [
-      "Чувствуете ли вы сильное желание иметь больше вещей или ресурсов?",
-      "Вам трудно делиться своими вещами с другими?",
-      "Часто ли вы чувствуете, что вам чего-то не хватает, даже если у вас есть всё необходимое?",
-      "Легко ли вам тратить деньги на других людей?",
-      "Чувствуете ли вы беспокойство, если у вас нет контроля над вещами, которые вам нужны?",
-      "Бывает ли, что вы испытываете зависть к тем, кто обладает тем, чего у вас нет?",
-      "Чувствуете ли вы, что никогда не достаточно богаты или успешны, чтобы почувствовать удовлетворение?",
-      "Часто ли вы хотите иметь больше, даже если это не приносит вам истинного счастья?",
-      "Трудно ли вам отказаться от вещей, даже если они вам больше не нужны?",
-    ],
-  },
-  {
-    name: "Дракон саморазрушения",
-    questions: [
-      "Бывают ли моменты, когда вы чувствуете себя недостойным хорошего отношения или успеха?",
-      "Вы часто поступаете так, что это причиняет вам вред, даже если знаете о последствиях?",
-      "Часто ли вы избегаете заботы о себе и своём здоровье?",
-      "Склонны ли вы к негативным мыслям о себе, которые мешают вашему счастью?",
-      "Бывает ли, что вы отказываетесь от хороших возможностей, считая, что не заслуживаете их?",
-      "Бывает ли, что вы намеренно избегаете успеха, опасаясь его последствий?",
-      "Чувствуете ли вы, что ваши ошибки невозможно исправить, и это ведет к саморазрушению?",
-      "Часто ли вы откладываете заботу о своём здоровье, несмотря на последствия?",
-      "Бывает ли, что вы считаете, что ваше счастье неважно по сравнению с другими людьми?",
-    ],
-  },
-  {
-    name: "Дракон упрямства",
-    questions: [
-      "Сложно ли вам принимать чужие предложения или изменять свои привычки?",
-      "Ощущаете ли вы сопротивление, когда сталкиваетесь с необходимостью перемен?",
-      "Часто ли вы отказываетесь от помощи, предпочитая делать всё самостоятельно?",
-      "Бывает ли, что вы настаиваете на своём, даже если это не рационально?",
-      "Ощущаете ли вы страх перед неизвестностью, который мешает вам делать изменения в жизни?",
-      "Трудно ли вам адаптироваться к неожиданным изменениям, даже если они могут быть полезными?",
-      "Бывает ли, что вы отвергаете новые идеи только потому, что они нарушают привычный уклад?",
-      "Чувствуете ли вы потребность защищаться, когда вам предлагают что-то новое?",
-      "Бывает ли, что ваша первая реакция на перемены — это их отрицание?",
-    ],
-  },
-];
+// Константы
+const INITIAL_ANSWERS = new Array(8).fill([]);  // 8 вопросов в тесте
 
-const Test = () => {
-  const [currentDragon, setCurrentDragon] = useState(0);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [testCompleted, setTestCompleted] = useState(false);
 
-  const handleAnswer = (answer) => {
-    const dragonName = dragons[currentDragon].name;
-    setAnswers((prev) => ({
-      ...prev,
-      [dragonName]: (prev[dragonName] || 0) + (answer ? 1 : 0),
-    }));
+// Константы
+const INITIAL_TEST = {
+  "testName": "Как говорить так, чтобы вас услышали?",
+  "description": "Тест о психотипах, мотивации и сотрудничестве",
+  "modules": [
+    {
+      "name": "Типология людей на основе ценностей и функций",
+      "questions": [
+        {
+          "id": 1,
+          "text": "Отметьте 4 параметра, которые характерны для Производителя",
+          "options": [
+            "Нацелен на краткосрочный результат",
+            "Нацелен на долгосрочный процесс",
+            "Волнует вопрос «Что нужно делать?»",
+            "Волнуют вопросы «Когда делать и зачем?»",
+            "Фокус внимания глобальный",
+            "Фокус внимания детальный",
+            "Скорость принятия решения медленная",
+            "Скорость принятия решения быстрая"
+          ],
+          "correctAnswers": [0, 2, 5, 7],
+          "type": "multipleChoice"
+        },
+        {
+          "id": 2,
+          "text": "Отметьте 4 параметра, которые характерны для Администратора",
+          "options": [
+            "Нацелен на краткосрочный процесс",
+            "Нацелен на долгосрочный результат",
+            "Волнует вопрос «Кто будет делать?»",
+            "Волнует вопрос «Как нужно делать?»",
+            "Фокус внимания глобальный",
+            "Фокус внимания детальный",
+            "Скорость принятия решения медленная",
+            "Скорость принятия решения быстрая"
+          ],
+          "correctAnswers": [0, 3, 5, 6],
+          "type": "multipleChoice"
+        },
+        {
+          "id": 3,
+          "text": "Отметьте 4 параметра, которые характерны для Предпринимателя",
+          "options": [
+            "Нацелен на краткосрочный процесс",
+            "Нацелен на долгосрочный результат",
+            "Волнует вопрос «Что нужно делать?»",
+            "Волнуют вопросы «Когда делать и зачем?»",
+            "Фокус внимания глобальный",
+            "Фокус внимания детальный",
+            "Скорость принятия решения медленная",
+            "Скорость принятия решения быстрая"
+          ],
+          "correctAnswers": [1, 3, 4],
+          "type": "multipleChoice"
+        },
+        {
+          "id": 4,
+          "text": "Отметьте 4 параметра, которые характерны для Интегратора",
+          "options": [
+            "Нацелен на краткосрочный результат",
+            "Нацелен на долгосрочный процесс",
+            "Волнуют вопросы «Когда делать и зачем?»",
+            "Волнует вопрос «Кто будет делать?»",
+            "Фокус внимания глобальный",
+            "Фокус внимания детальный",
+            "Скорость принятия решения медленная",
+            "Скорость принятия решения быстрая"
+          ],
+          "correctAnswers": [1, 3, 6],
+          "type": "multipleChoice"
+        },
+        {
+          "id": 5,
+          "text": "Какие 2 качества отличают Производителя?",
+          "options": [
+            "Знающий",
+            "Свободолюбивый",
+            "Все держит под контролем",
+            "Целеустремленный",
+            "Готов рисковать",
+            "Эмпатия",
+            "Исполнительный",
+            "Общительный"
+          ],
+          "correctAnswers": [0, 3],
+          "type": "multipleChoice"
+        },
+        {
+          "id": 6,
+          "text": "Какие 2 качества отличают Администратора?",
+          "options": [
+            "Знающий",
+            "Свободолюбивый",
+            "Все держит под контролем",
+            "Целеустремленный",
+            "Готов рисковать",
+            "Эмпатия",
+            "Исполнительный",
+            "Общительный"
+          ],
+          "correctAnswers": [2, 6],
+          "type": "multipleChoice"
+        },
+        {
+          "id": 7,
+          "text": "Какие 2 качества отличают Предпринимателя?",
+          "options": [
+            "Знающий",
+            "Свободолюбивый",
+            "Все держит под контролем",
+            "Целеустремленный",
+            "Готов рисковать",
+            "Эмпатия",
+            "Исполнительный",
+            "Общительный"
+          ],
+          "correctAnswers": [1, 4],
+          "type": "multipleChoice"
+        },
+        {
+          "id": 8,
+          "text": "Какие 2 качества отличают Интегратора?",
+          "options": [
+            "Знающий",
+            "Свободолюбивый",
+            "Все держит под контролем",
+            "Целеустремленный",
+            "Готов рисковать",
+            "Эмпатия",
+            "Исполнительный",
+            "Общительный"
+          ],
+          "correctAnswers": [5, 7],
+          "type": "multipleChoice"
+        }
+      ]
+    }
+  ]
+}
 
-    if (currentQuestion < dragons[currentDragon].questions.length - 1) {
-      setCurrentQuestion((prev) => prev + 1);
-    } else if (currentDragon < dragons.length - 1) {
-      setCurrentDragon((prev) => prev + 1);
-      setCurrentQuestion(0);
+
+export default function TestPage() {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [userAnswers, setUserAnswers] = useState(INITIAL_ANSWERS);
+  const [showResults, setShowResults] = useState(false);
+  const [test] = useState(INITIAL_TEST);
+
+  const questions = test.modules[0].questions;
+  const currentQuestion = questions[currentQuestionIndex];
+
+  const handleAnswerSelect = (answers) => {
+    setUserAnswers((prev) => {
+      const newAnswers = [...prev];
+      newAnswers[currentQuestionIndex] = answers;
+      return newAnswers;
+    });
+  };
+
+  const handleNext = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      setTestCompleted(true);
+      setShowResults(true);
     }
   };
 
-  const findPrimaryDragons = () => {
-    return Object.entries(answers)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 7)
-      .filter(([_, count]) => count > 0);
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prev) => prev - 1);
+    }
   };
 
-  function getDeclension(count, one, two, five) {
-    if (count % 100 > 10 && count % 100 < 20) {
-      return five;
-    }
-    if (count % 10 === 1) {
-      return one;
-    }
-    if (count % 10 >= 2 && count % 10 <= 4) {
-      return two;
-    }
-    return five;
-  }
-
-  const resetTest = () => {
-    setCurrentDragon(0);
-    setCurrentQuestion(0);
-    setAnswers({});
-    setTestCompleted(false);
+  const handleRetry = () => {
+    setCurrentQuestionIndex(0);
+    setUserAnswers(new Array(questions.length).fill([]));
+    setShowResults(false);
   };
 
-  if (testCompleted) {
-    const primaryDragons = findPrimaryDragons();
-    return (
-      <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Результат теста</h2>
-        <div>
-          <p className="mb-3">Количество баллов по драконам:</p>
-          {primaryDragons.map(([dragon, count], index) => (
-            <p key={dragon} className={`mb-2`}>
-              {index + 1}. {dragon} ({count}{" "}
-              {getDeclension(count, "балл", "балла", "баллов")})
-            </p>
-          ))}
-        </div>
-        <button
-          onClick={resetTest}
-          className="w-full mt-4 p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Пройти тест заново
-        </button>
-      </div>
-    );
+  if (showResults) {
+    return <Results userAnswers={userAnswers} questions={questions} onRetry={handleRetry} />;
   }
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-     {/*  <h2 className="text-2xl font-bold mb-4">{dragons[currentDragon].name}</h2> */}
-      <div>
-        <p className="mb-4">
-          {dragons[currentDragon].questions[currentQuestion]}
-        </p>
-        <div className="flex space-x-4">
-          <button
-            onClick={() => handleAnswer(true)}
-            className="w-1/2 p-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            Да
-          </button>
-          <button
-            onClick={() => handleAnswer(false)}
-            className="w-1/2 p-2 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Нет
-          </button>
+    <div className="min-h-screen bg-gray-50 py-2 sm:py-12">
+      <div className="max-w-4xl mx-auto px-2 sm:px-4">
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="p-3 sm:p-6 bg-blue-600">
+            <h1 className="text-2xl font-bold text-white">{test.testName}</h1>
+            <p className="text-blue-100 mt-2">{test.description}</p>
+          </div>
+
+          <div className="p-2 sm:p-4">
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-2">
+                <span 
+                  className="text-sm text-gray-600"
+                  role="status"
+                  aria-label={`Вопрос ${currentQuestionIndex + 1} из ${questions.length}`}
+                >
+                  Вопрос {currentQuestionIndex + 1} из {questions.length}
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  style={{
+                    width: `${((currentQuestionIndex + 1) / questions.length) * 100}%`,
+                  }}
+                  role="progressbar"
+                  aria-valuenow={currentQuestionIndex + 1}
+                  aria-valuemin={1}
+                  aria-valuemax={questions.length}
+                />
+              </div>
+            </div>
+
+            <Question
+              question={currentQuestion}
+              selectedAnswers={userAnswers[currentQuestionIndex] || []}
+              onAnswerSelect={handleAnswerSelect}
+            />
+
+            <div className="flex justify-between mt-8">
+              <button
+                onClick={handlePrevious}
+                disabled={currentQuestionIndex === 0}
+                className="px-4 sm:px-6 py-2 rounded-lg bg-gray-200 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 transition-colors focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:outline-none"
+                aria-label="Перейти к предыдущему вопросу"
+              >
+                Назад
+              </button>
+
+              <button
+                onClick={handleNext}
+                disabled={!userAnswers[currentQuestionIndex]?.length}
+                className="px-4 sm:px-6 py-2 rounded-lg bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+                aria-label={currentQuestionIndex === questions.length - 1 ? "Завершить тест" : "Перейти к следующему вопросу"}
+              >
+                {currentQuestionIndex === questions.length - 1 ? "Завершить" : "Далее"}
+              </button>
+            </div>
+          </div>
         </div>
-        <p className="mt-4 text-sm text-gray-500">
-          Вопрос {currentQuestion + 1} из{" "}
-          {dragons[currentDragon].questions.length} (Дракон {currentDragon + 1}{" "}
-          из {dragons.length})
-        </p>
       </div>
     </div>
   );
-};
-
-export default Test;
+}
