@@ -1,8 +1,23 @@
 {
-  "name": "online-test-1",
+  "name": "psychotype-test",
   "version": "0.1.0",
   "private": true,
+  "description": "Интерактивный тест для определения психотипа и улучшения коммуникации в команде",
+  "keywords": [
+    "психотипы",
+    "тест",
+    "мотивация",
+    "команда",
+    "коммуникация",
+    "react",
+    "tailwindcss"
+  ],
+  "author": "MakShuk",
   "homepage": "https://MakShuk.github.io/online-test-1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MakShuk/online-test-1"
+  },
   "dependencies": {
     "@shadcn/ui": "^0.0.4",
     "@testing-library/jest-dom": "^5.17.0",
